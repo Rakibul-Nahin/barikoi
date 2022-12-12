@@ -15,16 +15,43 @@ export default function App() {
   const [placeName, setPlaceName] = useState("Burger Lab");
   const [bangla, setBangla] = useState(false);
   const [places, setPlaces] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
 
 
   const find_place_request=()=>{
-    console.log("place name: ", placeName);
+    // console.log("place name: ", placeName);
     Axios.get(
       "https://barikoi.xyz/v1/api/search/autocomplete/"+API_KEY+"/place?q="+placeName
     )
     .then( (res)=>{setPlaces(res.data["places"]);} )
     // .then( (res)=>{console.log(res.data["places"]);} )
     .catch( (err)=>{console.log(err);} )
+  }
+
+
+  const onSearchHandler=(text)=>{
+    setPlaceName(text)
+    let searchValue = text;
+    if(searchValue == ""){
+      setSuggestions([]);
+    }else{
+      let request = "https://barikoi.xyz/v1/api/search/autocomplete/"+API_KEY+"/place?q="+searchValue;
+      Axios.get(request)
+      .then((res)=>{
+        if("message" in res.data){
+          setSuggestions([{"address": "no address found with this name"}])
+        }else{
+          setSuggestions(res.data["places"]);
+        }
+      })
+      .catch((err)=>console.log(err))
+    }
+  }
+
+  const onSuggestionPress=(item)=>{
+    console.log("Suggestion press");
+    setPlaceName(item["address"]);
+    setPlaces([item])
   }
 
   return (
@@ -46,7 +73,7 @@ export default function App() {
               marginRight: 10
             }}
             placeholder="place name"
-            onChangeText={setPlaceName}
+            onChangeText={(text)=>{onSearchHandler(text)}}
           />
 
           <Text style={{ marginRight: 10}}>Bangla: </Text>
@@ -67,12 +94,17 @@ export default function App() {
           <Text>Find Place</Text>
         </TouchableOpacity>
 
-        <ScrollView style={{width: "100%", height: 100, borderColor: "black", borderWidth: 1, borderRadius: 5}}>
-          {places.map((item)=>{
-              console.log(item);
-              return(<Text>Latitude: {item["latitude"]}, Longitude: {item["longitude"]}</Text>)
-            })
-          }
+        <ScrollView style={{width: "100%", height: 150, borderColor: "black", borderWidth: 1, borderRadius: 5}}>
+          {suggestions.map((item)=>{
+              return (
+                <TouchableOpacity
+                  style={styles.suggestionBtn}
+                  onPress={()=>onSuggestionPress(item)}
+                >
+                  <Text style={{color: "white"}}>{item["address"]}</Text>
+                </TouchableOpacity>
+              )
+            })}
         </ScrollView>
 
       </View>
@@ -80,8 +112,8 @@ export default function App() {
       <MapView 
         style={styles.map}
         initialRegion={{
-          latitude: 23.80865290094849,
-          longitude:  90.42082681793359,
+          latitude: 23.81298811254991,
+          longitude:  90.42189002037048,
           latitudeDelta: 0.0722,
           longitudeDelta: 0.0321,
         }}
@@ -92,14 +124,20 @@ export default function App() {
             <Marker
               key={index}
               coordinate={{latitude: items["latitude"], longitude: items["longitude"]}}
-              title={"title"}
-              description={"description"}
+              title={items["address"]}
+              description={items["pType"]+" Post Code: "+items["postCode"]}
             />
           )
           
         })}
 
+
       </MapView>
+
+      {/* <Text>Places</Text>
+      <View style={{height: 100, width: "100%", backgroundColor: "#95bcf5"}}>
+        {console.log(places)}
+      </View> */}
 
     </View>
   );
@@ -118,4 +156,15 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '70%',
   },
+
+  suggestionBtn: {
+    height: 20,
+    // width: 50,
+    backgroundColor: "#4287f5",
+    borderRadius: 5,
+    borderWidth: 1,
+    margin: 1,
+  },
+
+
 });
