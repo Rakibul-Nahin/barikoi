@@ -10,11 +10,10 @@ import Axios from "axios"
 
 export default function MyMapView() {
     
-  const API_KEY = "NDQyOToxSU1QVFhSSkVZ";
-
-  const [placeName, setPlaceName] = useState("Burger Lab");
-  const [bangla, setBangla] = useState(false);
-  const [places, setPlaces] = useState([]);
+    const API_KEY = "NDQyOToxSU1QVFhSSkVZ";
+    const [placeName, setPlaceName] = useState("Burger Lab");
+    const [bangla, setBangla] = useState(false);
+    const [places, setPlaces] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
 
 

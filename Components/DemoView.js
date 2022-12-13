@@ -15,16 +15,10 @@ export default function DemoView() {
   const find_waypoints=()=>{
 
     let data = {
-      "api_key": {API_KEY},
+      "api_key": API_KEY,
       "source": "23.746086,90.37368",
       "destination": "23.746214,90.371654",
       "profile": "car",
-      "geo_points": [
-          {"id": 1, "point": "23.746086,90.37368"},
-          {"id": 2, "point": "23.74577,90.373389"},
-          {"id": 3, "point": "23.74442,90.372909"},
-          {"id": 4, "point": "23.743961,90.37214"}
-        ]
     };
 
     console.log("clicked");
