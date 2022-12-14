@@ -11,7 +11,7 @@ import Axios from "axios"
 export default function MyMapView() {
     
     const API_KEY = "NDQyOToxSU1QVFhSSkVZ";
-    const [placeName, setPlaceName] = useState("Burger Lab");
+    const [source, setSource] = useState("Burger Lab");
     const [bangla, setBangla] = useState(false);
     const [places, setPlaces] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
@@ -20,7 +20,7 @@ export default function MyMapView() {
   const find_place_request=()=>{
     // console.log("place name: ", placeName);
     Axios.get(
-      "https://barikoi.xyz/v1/api/search/autocomplete/"+API_KEY+"/place?q="+placeName
+      "https://barikoi.xyz/v1/api/search/autocomplete/"+API_KEY+"/place?q="+source
     )
     .then( (res)=>{setPlaces(res.data["places"]);} )
     // .then( (res)=>{console.log(res.data["places"]);} )
@@ -28,7 +28,7 @@ export default function MyMapView() {
   }
 
   const onSearchHandler=(text)=>{
-    setPlaceName(text)
+    setSource(text)
     let searchValue = text;
     if(searchValue == ""){
       setSuggestions([]);
@@ -48,7 +48,7 @@ export default function MyMapView() {
 
   const onSuggestionPress=(item)=>{
     console.log("Suggestion press");
-    setPlaceName(item["address"]);
+    setSource(item["address"]);
     setPlaces([item])
   }
     return(
@@ -57,39 +57,35 @@ export default function MyMapView() {
             <Text style={{fontSize: 25}}>Search a place</Text>
             
             {/* find place view */}
-            <View style={{flexDirection: "row", marginTop: 5}}>
-            <Text style={{ marginRight: 10}}>Place Name: </Text>
-            <TextInput 
-                style={{
-                marginRight: "10px",
-                borderRadius:5,
-                borderColor:"black",
-                borderWidth: 1,
-                width: "35%",
-                textAlign: "center",
-                marginRight: 10
-                }}
-                placeholder="place name"
-                onChangeText={(text)=>{onSearchHandler(text)}}
-            />
+            <View style={{flexDirection: "row", margin: 5}}>
+            	<Text style={{ marginRight: 10}}>Source Name: </Text>
+				<TextInput 
+					style={styles.textInput}
+					placeholder="source place"
+					onChangeText={(text)=>{onSearchHandler(text)}}
+				/>
 
-            <Text style={{ marginRight: 10}}>Bangla: </Text>
-            <BouncyCheckbox onPress={(isChecked) => {setBangla(isChecked)}} />
+            	<Text style={{ marginRight: 10}}>Bangla: </Text>
+            	<BouncyCheckbox onPress={(isChecked) => {setBangla(isChecked)}} />
+            </View>
+
+			<View style={{flexDirection: "row", margin: 5}}>
+            	<Text style={{ marginRight: 10}}>Destination Name: </Text>
+				<TextInput 
+					style={styles.textInput}
+					placeholder="Destination place"
+					onChangeText={(text)=>{onSearchHandler(text)}}
+				/>
+
+				<TouchableOpacity
+					onPress={()=>{find_place_request()}}
+					style={styles.findPlace}
+				>
+					<Text>Find Place</Text>
+				</TouchableOpacity>
             </View>
                 
-            <TouchableOpacity
-            onPress={()=>{find_place_request()}}
-            style={{
-                alignItems: "center",
-                backgroundColor: "#4d90fa", 
-                width: 100, height: 30,
-                justifyContent: "center",
-                borderRadius: 10,
-                margin: 5,
-            }}
-            >
-            <Text>Find Place</Text>
-            </TouchableOpacity>
+            
 
             {/* suggestion view */}
             <ScrollView style={{width: "100%", height: 150, borderColor: "black", borderWidth: 1, borderRadius: 5}}>
@@ -140,18 +136,39 @@ export default function MyMapView() {
 const styles = StyleSheet.create({
     
     map: {
-      width: '100%',
-      height: '70%',
+		width: '100%',
+		height: '60%',
     },
   
     suggestionBtn: {
-      height: 20,
-      // width: 50,
-      backgroundColor: "#4287f5",
-      borderRadius: 5,
-      borderWidth: 1,
-      margin: 1,
+		height: 20,
+		// width: 50,
+		backgroundColor: "#4287f5",
+		borderRadius: 5,
+		borderWidth: 1,
+		margin: 1,
     },
+
+	textInput:{
+		
+		marginRight: "10px",
+		borderRadius:5,
+		borderColor:"black",
+		borderWidth: 1,
+		width: "35%",
+		textAlign: "center",
+		marginRight: 10
+		
+	},
+
+	findPlace:{
+		alignItems: "center",
+		backgroundColor: "#4d90fa", 
+		width: 100, height: 30,
+		justifyContent: "center",
+		borderRadius: 10,
+		margin: 5,
+	},
   
   
   });

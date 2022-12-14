@@ -9,7 +9,6 @@ import Axios from "axios"
 import MyMapView from './Components/MyMapView';
 import DemoView from './Components/DemoView';
 
-var polyline = require('@mapbox/polyline');
 
 
 export default function App() {
@@ -17,9 +16,9 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {/* <MyMapView /> */}
+      <MyMapView />
 
-      <DemoView />
+      {/* <DemoView /> */}
 
     </View>
   );
