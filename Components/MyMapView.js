@@ -95,7 +95,7 @@ export default function MyMapView() {
 		let destination = {"latitude": dCoord[0]["latitude"], "longitude":  dCoord[0]["longitude"]};
 
 
-		console.log(source, destination);
+		// console.log(source, destination);
 
 		const urls = "https://barikoi.xyz/v1/api/route/"+API_KEY+"/"+sCoord[0]["longitude"]+","+sCoord[0]["latitude"]+";"+dCoord[0]["longitude"]+","+dCoord[0]["latitude"]+""
 		Axios({
