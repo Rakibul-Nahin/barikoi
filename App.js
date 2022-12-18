@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import { Text, View, StyleSheet, TextInput, 
-  Button , TouchableOpacity, ScrollView} 
+  Button , TouchableOpacity, ScrollView, SafeAreaView} 
 from 'react-native';
 import Constants from 'expo-constants';
 import MapView, {Marker} from "react-native-maps"
@@ -16,22 +16,23 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <MyMapView />
+        <MyMapView />
 
-      {/* <DemoView /> */}
+        {/* <DemoView /> */}
 
-    </View>
+      </View>
+    
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#ecf0f1',
     padding: 8,
-    textAlign: "center"
+    textAlign: "center",
+    backgroundColor: "#38323b"
   },
 
 
